@@ -44,6 +44,6 @@ cercar_cadastre = driver.find_element(By.XPATH, "//input[@id='RC']/..")
 print(cercar_cadastre)
 cercar_cadastre.click()
 
-time.sleep(7)
+time.sleep(5)
 
 driver.quit()
