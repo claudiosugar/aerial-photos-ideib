@@ -6,14 +6,10 @@ from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.common.by import By
 import time
 
-numero_catastro = "07040A007000630"
+numero_catastro = ("1583813EE7218S")
+years_to_screenshot = [1956, 1984, 1989, 2001, 2002, 2006, 2008, 2010, 2012, 2015, 2018, 2021, 2023]
 
 def take_screenshot(year):
-    # year_select
-    year_select = driver.find_element(By.XPATH, "//img[@alt='Fotografies històriques de totes les illes']")
-    print('year_select')
-    year_select.click()
-    time.sleep(3)
 
     # specific year
     year_to_click = driver.find_element(By.XPATH, "//span[text()=" + str(year) + "]")
@@ -30,7 +26,7 @@ def take_screenshot(year):
     # save screenshot
     driver.save_screenshot(screenshot_path)
     print('screenshot saved')
-    time.sleep(3)
+    time.sleep(1)
 
 
 
@@ -120,11 +116,16 @@ print('screenshot saved')
 
 time.sleep(3)
 
-take_screenshot(1956)
-take_screenshot(2006)
-take_screenshot(1989)
+# year_select
+year_select = driver.find_element(By.XPATH, "//img[@alt='Fotografies històriques de totes les illes']")
+year_select.click()
 
 time.sleep(3)
+
+# take screenshots for other years
+for i in years_to_screenshot:
+    take_screenshot(i)
+
 
 
 time.sleep(5)
