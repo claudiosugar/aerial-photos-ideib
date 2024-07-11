@@ -6,7 +6,7 @@ from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.common.by import By
 import time
 
-numero_catastro = ("1583813EE7218S")
+numero_catastro = ("07040A007000630")
 years_to_screenshot = [1956, 1984, 1989, 2001, 2002, 2006, 2008, 2010, 2012, 2015, 2018, 2021, 2023]
 
 def take_screenshot(year):
@@ -23,9 +23,9 @@ def take_screenshot(year):
         os.remove(screenshot_path)
         print(f"Existing screenshot deleted: {screenshot_path}")
 
-    # save screenshot
-    driver.save_screenshot(screenshot_path)
+    # save screenshot driver.save_screenshot(screenshot_path, map_container_x, map_container_y, map_container_width, map_container_height)
     print('screenshot saved')
+
     time.sleep(1)
 
 

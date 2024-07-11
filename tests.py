@@ -12,8 +12,10 @@ driver.get("https://ideib.caib.es/visor/")
 time.sleep(7)
 
 # Zoom in
-actions = ActionChains(driver)
-actions.key_down(Keys.CONTROL).send_keys(Keys.ADD).key_up(Keys.CONTROL).perform()
+
+mc = driver.find_element(By.CSS_SELECTOR, '.esriMapContainer')
+mc1 = mc.size()
+
 
 time.sleep(5)
 
