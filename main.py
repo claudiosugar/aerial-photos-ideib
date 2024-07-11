@@ -6,7 +6,8 @@ from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.common.by import By
 import time
 
-numero_catastro = ("07040A007000630")
+numero_catastro = ("1583813EE7218S")
+posibles_catastros = ['1583813EE7218S', '07040A007000630']
 years_to_screenshot = [1956, 1984, 1989, 2001, 2002, 2006, 2008, 2010, 2012, 2015, 2018, 2021, 2023]
 
 def take_screenshot(year):
@@ -18,12 +19,13 @@ def take_screenshot(year):
     time.sleep(3)
 
     # check if screenshot already exists, delete if it does
-    screenshot_path = os.path.join(screenshot_directory, numero_catastro + "_" + str(year) + ".png")
+    screenshot_path = os.path.join(screenshot_directory, str(year) + "_" + numero_catastro + ".png")
     if os.path.exists(screenshot_path):
         os.remove(screenshot_path)
         print(f"Existing screenshot deleted: {screenshot_path}")
 
-    # save screenshot driver.save_screenshot(screenshot_path, map_container_x, map_container_y, map_container_width, map_container_height)
+    # save screenshot
+    driver.save_screenshot(screenshot_path)
     print('screenshot saved')
 
     time.sleep(1)
@@ -45,7 +47,7 @@ dacord = driver.find_element(By.XPATH, '//*[@id="widgets_ideibSplash_Widget_28"]
 print('dacord')
 dacord.click()
 
-time.sleep(3)
+time.sleep(2)
 
 # boton Cerca avançada
 cercaimg = driver.find_element(By.XPATH, "//img[@class='icon' and contains(@src, '/visor/widgets/ideibLocate/images/icon.png?wab_dv=2.22')]")
@@ -53,13 +55,13 @@ cerca = cercaimg.find_element(By.XPATH, "./..")
 print('cerca')
 cerca.click()
 
-time.sleep(3)
+time.sleep(2)
 
 # tab Cadastre
 cadastre = driver.find_element(By.XPATH, "//div[@label='Cadastre']")
 cadastre.click()
 
-time.sleep(3)
+time.sleep(2)
 
 # Input referencia cadastral
 input_cadastre = driver.find_element(By.XPATH, "//input[@id='RC']")
@@ -67,28 +69,28 @@ input_cadastre.clear()
 print('input cadastre')
 input_cadastre.send_keys(numero_catastro)
 
-time.sleep(3)
+time.sleep(2)
 
 # Cercar cadastre
 cercar_cadastre = driver.find_element(By.XPATH, "//div[@data-dojo-attach-point='btnRefCat']")
 print('cercar_cadastre')
 cercar_cadastre.click()
 
-time.sleep(3)
+time.sleep(2)
 
 # Tancar informacio
 tancar_informacio = driver.find_element(By.XPATH, "//div[@title='Tanca']")
 print('tancar_informacio')
 tancar_informacio.click()
 
-time.sleep(3)
+time.sleep(2)
 
 # Tancar cerca avançada
 tancar_cerca_avançada = driver.find_element(By.XPATH, "//div[@data-dojo-attach-point='closeNode']")
 print('tancar_cerca_avançada')
 tancar_cerca_avançada.click()
 
-time.sleep(3)
+time.sleep(2)
 
 # Zoom in
 print('zoom')
@@ -107,14 +109,14 @@ if os.path.exists(screenshot_directory):
 os.mkdir(screenshot_directory)
 
 # screenshot now
-screenshot_path = os.path.join(screenshot_directory, numero_catastro + "_now.png")
+screenshot_path = os.path.join(screenshot_directory, "now_" + numero_catastro + ".png")
 if os.path.exists(screenshot_path):
     os.remove(screenshot_path)
     print(f"Existing screenshot deleted: {screenshot_path}")
 driver.save_screenshot(screenshot_path)
 print('screenshot saved')
 
-time.sleep(3)
+time.sleep(5)
 
 # year_select
 year_select = driver.find_element(By.XPATH, "//img[@alt='Fotografies històriques de totes les illes']")
