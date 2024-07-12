@@ -2,21 +2,23 @@ import os
 import shutil
 
 from selenium import webdriver
+from selenium.common import NoSuchElementException
 from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.common.by import By
 import time
 
-numero_catastro = ("1583813EE7218S")
-posibles_catastros = ['1583813EE7218S', '07040A007000630']
+print('input numero de catastro:\n')
+numero_catastro = input()
+posibles_catastros = ['1583813EE7218S', '07040A007000630', '07008A00900111', '07008A01300014']
 years_to_screenshot = [1956, 1984, 1989, 2001, 2002, 2006, 2008, 2010, 2012, 2015, 2018, 2021, 2023]
 
 def take_screenshot(year):
 
     # specific year
     year_to_click = driver.find_element(By.XPATH, "//span[text()=" + str(year) + "]")
-    print(year)
+    print(str(year) + ' init')
     year_to_click.click()
-    time.sleep(3)
+    time.sleep(5)
 
     # check if screenshot already exists, delete if it does
     screenshot_path = os.path.join(screenshot_directory, str(year) + "_" + numero_catastro + ".png")
@@ -26,7 +28,7 @@ def take_screenshot(year):
 
     # save screenshot
     driver.save_screenshot(screenshot_path)
-    print('screenshot saved')
+    print(str(year) + ' screenshot saved')
 
     time.sleep(1)
 
@@ -38,14 +40,17 @@ driver.get("https://ideib.caib.es/visor/")
 
 time.sleep(2)
 
-driver.maximize_window()
+driver.fullscreen_window()
 
 time.sleep(7)
 
 # boton D'acord
-dacord = driver.find_element(By.XPATH, '//*[@id="widgets_ideibSplash_Widget_28"]/div[2]/div[2]/div[3]/div[2]')
-print('dacord')
-dacord.click()
+try:
+    dacord = driver.find_element(By.XPATH, '//*[@id="widgets_ideibSplash_Widget_28"]/div[2]/div[2]/div[3]/div[2]')
+    dacord.click()
+    print('dacord')
+except NoSuchElementException:
+    print('dacord not found')
 
 time.sleep(2)
 
@@ -78,12 +83,13 @@ cercar_cadastre.click()
 
 time.sleep(2)
 
-# Tancar informacio
+"""
+# Tancar informacio - no parece necesario ya que se cierra con tancar cerca avançada
 tancar_informacio = driver.find_element(By.XPATH, "//div[@title='Tanca']")
 print('tancar_informacio')
 tancar_informacio.click()
 
-time.sleep(2)
+time.sleep(2)"""
 
 # Tancar cerca avançada
 tancar_cerca_avançada = driver.find_element(By.XPATH, "//div[@data-dojo-attach-point='closeNode']")
@@ -97,8 +103,34 @@ print('zoom')
 actions = ActionChains(driver)
 actions.key_down(Keys.CONTROL).send_keys(Keys.ADD).key_up(Keys.CONTROL).perform()
 actions.key_down(Keys.CONTROL).send_keys(Keys.ADD).key_up(Keys.CONTROL).perform()
+actions.key_down(Keys.CONTROL).send_keys(Keys.ADD).key_up(Keys.CONTROL).perform()
 
 time.sleep(5)
+
+# hide stuff
+stuff_ids = [
+    'themes_IDEIBTheme_widgets_AnchorBarController_Widget_20',
+    'widgets_ideibSearch_Widget_22',
+    'themes_IDEIBTheme_widgets_Header_Widget_21',
+    'widgets_ZoomSlider_Widget_24',
+    'widgets_ideibStreetView',
+    'widgets_MyLocation_Widget_26',
+    'widgets_ideibHomeButton_Widget_25',
+    'widgets_ideibZoomExtent',
+    'widgets_ZoomSlider_Widget_24',
+    'dijit__WidgetBase_2',
+    'esri_dijit_OverviewMap_1'
+         ]
+
+for i in stuff_ids:
+    stuff_to_hide = driver.find_element(By.ID, i)
+    driver.execute_script("arguments[0].style.display = 'none';", stuff_to_hide)
+    print('hide ' + i)
+
+# hide left column
+print('hide left column')
+left_column = driver.find_element(By.CSS_SELECTOR, ".bar.max")
+left_column.click()
 
 # create screenshot_directory
 project_root = os.getcwd()
@@ -122,7 +154,7 @@ time.sleep(5)
 year_select = driver.find_element(By.XPATH, "//img[@alt='Fotografies històriques de totes les illes']")
 year_select.click()
 
-time.sleep(3)
+time.sleep(4)
 
 # take screenshots for other years
 for i in years_to_screenshot:
