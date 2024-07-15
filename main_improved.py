@@ -1,8 +1,11 @@
 import os
 import shutil
 import time
+import tkinter as tk
+from tkinter import simpledialog
 from selenium import webdriver
 from selenium.webdriver import ActionChains
+from selenium.webdriver.chrome import options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
@@ -129,9 +132,16 @@ def take_screenshot(driver, screenshot_directory, identifier, numero_catastro):
     driver.save_screenshot(screenshot_path)
     print(f'Screenshot for {identifier} saved.')
 
-def main():
-    print('Input numero de catastro:\n')
-    numero_catastro = '07040A007000630'
+def start_gui():
+    root = tk.Tk()
+    root.withdraw()  # Hide the root window
+
+    numero_catastro = simpledialog.askstring("Input", "Enter numero de catastro:")
+
+    if numero_catastro:
+        main(numero_catastro)
+
+def main(numero_catastro):
     # numero_catastro = input() or '07040A007000630'
     years_to_screenshot = [1956, 1984, 1989, 2001, 2002, 2006, 2008, 2010, 2012, 2015, 2018, 2021, 2023]
 
@@ -173,4 +183,4 @@ def main():
     driver.quit()
 
 if __name__ == "__main__":
-    main()
+    start_gui()
