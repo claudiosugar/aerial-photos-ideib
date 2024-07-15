@@ -1,35 +1,26 @@
-from selenium import webdriver
-from selenium.common import NoSuchElementException
-from selenium.webdriver import ActionChains, Keys
-from selenium.webdriver.common.by import By
-import time
+import os
+from openai import OpenAI
 
-numero_catastro = "07040A007000630"
+client = OpenAI(
+    api_key='sk-proj-PvEfnv5D8WVXEGc6W1coT3BlbkFJZi45uBOmKi31jtE4QrGv'
+)
 
-driver = webdriver.Chrome()
+def chat_with_gpt():
+    print("ChatGPT - Type 'quit' to exit.")
+    while True:
+        user_input = input("You: ")
+        if user_input.lower() == 'quit':
+            break
 
-driver.get("https://ideib.caib.es/visor/")
+        try:
+            response = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[{"role": "user", "content": user_input}],
+            )
+            print("ChatGPT:", response.choices[0].message)
+        except Exception as e:
+            print("An error occurred:", e)
 
-time.sleep(7)
 
-# Zoom in
-
-# boton D'acord
-try:
-    dacord = driver.find_element(By.XPATH, '//*[@id="widgets_ideibSplash_Widget_28"]/div[2]/div[2]/div[3]/div[2]')
-    dacord.click()
-    print('dacord')
-except NoSuchElementException:
-    print('dacord not found')
-
-time.sleep(2)
-
-# hide left column
-print('hide left column')
-left_column = driver.find_element(By.CSS_SELECTOR, ".bar.max")
-print(left_column.get_attribute('outerHTML'))
-left_column.click()
-
-time.sleep(5)
-
-driver.quit()
+if __name__ == "__main__":
+    chat_with_gpt()

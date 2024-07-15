@@ -9,6 +9,8 @@ import time
 
 print('input numero de catastro:\n')
 numero_catastro = input()
+if numero_catastro == '':
+    numero_catastro = '07040A007000630'
 posibles_catastros = ['1583813EE7218S', '07040A007000630', '07008A00900111', '07008A01300014']
 years_to_screenshot = [1956, 1984, 1989, 2001, 2002, 2006, 2008, 2010, 2012, 2015, 2018, 2021, 2023]
 
@@ -131,10 +133,14 @@ for i in stuff_ids:
 print('hide left column')
 left_column = driver.find_element(By.CSS_SELECTOR, ".bar.max")
 left_column.click()
+left_column.click()
 
-# create screenshot_directory
+# create screenshot directory
 project_root = os.getcwd()
-screenshot_directory = os.path.join(project_root, "screenshots", numero_catastro)
+screenshots_root = os.path.join(project_root, "screenshots")
+if not os.path.exists(screenshots_root):
+    os.mkdir(screenshots_root)
+screenshot_directory = os.path.join(screenshots_root, numero_catastro)
 if os.path.exists(screenshot_directory):
     shutil.rmtree(screenshot_directory)
     print(f"Existing directory deleted: {screenshot_directory}")
