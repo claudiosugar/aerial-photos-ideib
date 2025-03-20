@@ -157,7 +157,7 @@ def main(numero_catastro):
     screenshot_directory = setup_screenshot_directory(numero_catastro)
 
     # Screenshot the current state
-    time.sleep(2)
+    time.sleep(5)
     take_screenshot(driver, screenshot_directory, "now", numero_catastro)
 
     # Prepare for historical screenshots
@@ -175,7 +175,7 @@ def main(numero_catastro):
             year_element.click()
             print(f"Year {year} selected.")
             # Wait for the image or map to load
-            time.sleep(2)
+            time.sleep(5)
             take_screenshot(driver, screenshot_directory, str(year), numero_catastro)
         except TimeoutException:
             print(f"Failed to find or select year {year}.")
